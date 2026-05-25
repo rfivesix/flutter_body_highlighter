@@ -319,7 +319,13 @@ class SvgPathParser {
           final x = command == 'a' ? cursorX + scanner.readNumber() : scanner.readNumber();
           final y = command == 'a' ? cursorY + scanner.readNumber() : scanner.readNumber();
 
-          _arcTo(path, rx, ry, xAxisRotation, largeArcFlag, sweepFlag, cursorX, cursorY, x, y);
+          path.arcToPoint(
+            Offset(x, y),
+            radius: Radius.elliptical(rx, ry),
+            rotation: xAxisRotation * math.pi / 180.0,
+            largeArc: largeArcFlag,
+            clockwise: sweepFlag,
+          );
 
           cursorX = x;
           cursorY = y;
@@ -336,111 +342,5 @@ class SvgPathParser {
     }
 
     return path;
-  }
-
-  static void _arcTo(Path path, double rx, double ry, double xAxisRotation, bool largeArcFlag, bool sweepFlag, double x1, double y1, double x2, double y2) {
-    if (x1 == x2 && y1 == y2) return;
-
-    if (rx == 0.0 || ry == 0.0) {
-      path.lineTo(x2, y2);
-      return;
-    }
-
-    rx = rx.abs();
-    ry = ry.abs();
-
-    final phi = xAxisRotation * math.pi / 180.0;
-    final cosPhi = math.cos(phi);
-    final sinPhi = math.sin(phi);
-
-    final dx = (x1 - x2) / 2.0;
-    final dy = (y1 - y2) / 2.0;
-
-    final x1Prime = cosPhi * dx + sinPhi * dy;
-    final y1Prime = -sinPhi * dx + cosPhi * dy;
-
-    double rxSq = rx * rx;
-    double rySq = ry * ry;
-    final x1PrimeSq = x1Prime * x1Prime;
-    final y1PrimeSq = y1Prime * y1Prime;
-
-    final lambda = x1PrimeSq / rxSq + y1PrimeSq / rySq;
-    if (lambda > 1.0) {
-      rx *= math.sqrt(lambda);
-      ry *= math.sqrt(lambda);
-      rxSq = rx * rx;
-      rySq = ry * ry;
-    }
-
-    final sign = largeArcFlag == sweepFlag ? -1.0 : 1.0;
-    final sq = ((rxSq * rySq) - (rxSq * y1PrimeSq) - (rySq * x1PrimeSq)) / ((rxSq * y1PrimeSq) + (rySq * x1PrimeSq));
-    final coef = sign * math.sqrt(math.max(0.0, sq));
-
-    final cxPrime = coef * (rx * y1Prime / ry);
-    final cyPrime = coef * -(ry * x1Prime / rx);
-
-    final cx = cosPhi * cxPrime - sinPhi * cyPrime + (x1 + x2) / 2.0;
-    final cy = sinPhi * cxPrime + cosPhi * cyPrime + (y1 + y2) / 2.0;
-
-    final ux = (x1Prime - cxPrime) / rx;
-    final uy = (y1Prime - cyPrime) / ry;
-    final vx = (-x1Prime - cxPrime) / rx;
-    final vy = (-y1Prime - cyPrime) / ry;
-
-    double angleBetween(double ux, double uy, double vx, double vy) {
-      final dot = ux * vx + uy * vy;
-      final len = math.sqrt(ux * ux + uy * uy) * math.sqrt(vx * vx + vy * vy);
-      var angle = math.acos((dot / len).clamp(-1.0, 1.0));
-      if (ux * vy - uy * vx < 0.0) angle = -angle;
-      return angle;
-    }
-
-    final theta1 = angleBetween(1.0, 0.0, ux, uy);
-    var dTheta = angleBetween(ux, uy, vx, vy) % (2.0 * math.pi);
-
-    if (!sweepFlag && dTheta > 0.0) {
-      dTheta -= 2.0 * math.pi;
-    } else if (sweepFlag && dTheta < 0.0) {
-      dTheta += 2.0 * math.pi;
-    }
-
-    // Generate arc as bezier curves
-    final segments = (dTheta.abs() / (math.pi / 2.0)).ceil();
-    for (int i = 0; i < segments; i++) {
-      final startAngle = theta1 + i * dTheta / segments;
-      final endAngle = theta1 + (i + 1) * dTheta / segments;
-
-      final theta = (endAngle - startAngle) / 2.0;
-      final t = 4.0 / 3.0 * math.tan(theta / 2.0);
-
-      final startCos = math.cos(startAngle);
-      final startSin = math.sin(startAngle);
-      final endCos = math.cos(endAngle);
-      final endSin = math.sin(endAngle);
-
-      final p1x = rx * (startCos - t * startSin);
-      final p1y = ry * (startSin + t * startCos);
-      final p2x = rx * (endCos + t * endSin);
-      final p2y = ry * (endSin - t * endCos);
-      final p3x = rx * endCos;
-      final p3y = ry * endSin;
-
-      double transformX(double px, double py) {
-        return cosPhi * px - sinPhi * py + cx;
-      }
-
-      double transformY(double px, double py) {
-        return sinPhi * px + cosPhi * py + cy;
-      }
-
-      path.cubicTo(
-        transformX(p1x, p1y),
-        transformY(p1x, p1y),
-        transformX(p2x, p2y),
-        transformY(p2x, p2y),
-        transformX(p3x, p3y),
-        transformY(p3x, p3y),
-      );
-    }
   }
 }

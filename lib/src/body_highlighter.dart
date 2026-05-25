@@ -127,12 +127,14 @@ class BodyHighlighter extends StatelessWidget {
         final direction = pathEntry.key;
         final pathList = pathEntry.value;
 
-        for (final pathStr in pathList) {
+        for (int i = 0; i < pathList.length; i++) {
+          final pathStr = pathList[i];
           final path = BodyPathCache.getPath(
             gender: gender,
             side: side,
             slug: partSlugStr,
             direction: direction,
+            index: i,
             pathData: pathStr,
           );
 

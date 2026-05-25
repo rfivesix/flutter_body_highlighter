@@ -18,9 +18,10 @@ class BodyPathCache {
     required BodySide side,
     required String slug,
     required String direction,
+    required int index,
     required String pathData,
   }) {
-    final cacheKey = '${gender.name}_${side.name}_${slug}_$direction';
+    final cacheKey = '${gender.name}_${side.name}_${slug}_${direction}_$index';
     return _cache.putIfAbsent(cacheKey, () => SvgPathParser.parse(pathData));
   }
 }
@@ -144,12 +145,14 @@ class BodyPainter extends CustomPainter {
         final direction = pathEntry.key;
         final pathList = pathEntry.value;
 
-        for (final pathStr in pathList) {
+        for (int i = 0; i < pathList.length; i++) {
+          final pathStr = pathList[i];
           final path = BodyPathCache.getPath(
             gender: gender,
             side: side,
             slug: partSlugStr,
             direction: direction,
+            index: i,
             pathData: pathStr,
           );
 
