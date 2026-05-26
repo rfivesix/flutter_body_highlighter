@@ -72,7 +72,10 @@ enum BodyPartSlug {
   abductors,
 
   /// Calves (gastrocnemius and soleus).
-  calves;
+  calves,
+
+  /// Tibialis anterior (front lower leg).
+  tibialis;
 
   /// Utility to convert string slug from DB/JSON to Enum value.
   static BodyPartSlug? fromString(String slug) {
@@ -98,6 +101,10 @@ enum BodyPartSlug {
       case 'front-deltoids':
       case 'front-delts':
       case 'front-delt':
+      case 'deltoids':
+      case 'shoulders':
+      case 'shoulder':
+      case 'anterior-deltoids':
         return BodyPartSlug.frontDeltoids;
       case 'back-deltoids':
       case 'back-delts':
@@ -105,6 +112,7 @@ enum BodyPartSlug {
       case 'rear-deltoids':
       case 'rear-delts':
       case 'rear-delt':
+      case 'posterior-deltoids':
         return BodyPartSlug.backDeltoids;
       case 'biceps':
         return BodyPartSlug.biceps;
@@ -130,6 +138,8 @@ enum BodyPartSlug {
       case 'calves':
       case 'calf':
         return BodyPartSlug.calves;
+      case 'tibialis':
+        return BodyPartSlug.tibialis;
       default:
         return null;
     }
@@ -174,6 +184,8 @@ enum BodyPartSlug {
         return 'abductors';
       case BodyPartSlug.calves:
         return 'calves';
+      case BodyPartSlug.tibialis:
+        return 'tibialis';
     }
   }
 }
