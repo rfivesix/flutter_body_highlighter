@@ -1,6 +1,6 @@
 name: flutter_body_highlighter
 description: A high-performance, interactive, zero-dependency human body muscle highlighter widget.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/rfivesix/flutter_body_highlighter
 
 environment:
