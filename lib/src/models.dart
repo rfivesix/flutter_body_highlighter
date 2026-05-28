@@ -50,6 +50,12 @@ enum BodyPartSlug {
   /// Biceps brachii.
   biceps,
 
+  /// Biceps brachii long head.
+  biceps_long,
+
+  /// Biceps brachii short head.
+  biceps_short,
+
   /// Triceps brachii.
   triceps,
 
@@ -116,6 +122,14 @@ enum BodyPartSlug {
         return BodyPartSlug.backDeltoids;
       case 'biceps':
         return BodyPartSlug.biceps;
+      case 'biceps-long':
+      case 'bicepsbrachiilong':
+      case 'biceps_long':
+        return BodyPartSlug.biceps_long;
+      case 'biceps-short':
+      case 'bicepsbrachiishort':
+      case 'biceps_short':
+        return BodyPartSlug.biceps_short;
       case 'triceps':
         return BodyPartSlug.triceps;
       case 'forearm':
@@ -139,6 +153,9 @@ enum BodyPartSlug {
       case 'calf':
         return BodyPartSlug.calves;
       case 'tibialis':
+      case 'tibialis-anterior':
+      case 'tibialis_anterior':
+      case 'tibialis-anterior-muscle':
         return BodyPartSlug.tibialis;
       default:
         return null;
@@ -168,6 +185,10 @@ enum BodyPartSlug {
         return 'back-deltoids';
       case BodyPartSlug.biceps:
         return 'biceps';
+      case BodyPartSlug.biceps_long:
+        return 'biceps-long';
+      case BodyPartSlug.biceps_short:
+        return 'biceps-short';
       case BodyPartSlug.triceps:
         return 'triceps';
       case BodyPartSlug.forearm:
