@@ -60,7 +60,7 @@ enum BodyPartSlug {
   triceps,
 
   /// Forearm muscles.
-  forearm,
+  forearms,
 
   /// Gluteal muscles (gluteus maximus, medius, minimus).
   gluteal,
@@ -69,10 +69,10 @@ enum BodyPartSlug {
   quadriceps,
 
   /// Hamstrings (back thigh).
-  hamstring,
+  hamstrings,
 
   /// Adductors (inner thigh).
-  adductor,
+  adductors,
 
   /// Abductors (outer hip/thigh).
   abductors,
@@ -81,7 +81,7 @@ enum BodyPartSlug {
   calves,
 
   /// Tibialis anterior (front lower leg).
-  tibialis;
+  tibialisAnterior;
 
   /// Utility to convert string slug from DB/JSON to Enum value.
   static BodyPartSlug? fromString(String slug) {
@@ -134,7 +134,7 @@ enum BodyPartSlug {
         return BodyPartSlug.triceps;
       case 'forearm':
       case 'forearms':
-        return BodyPartSlug.forearm;
+        return BodyPartSlug.forearms;
       case 'gluteal':
       case 'glutes':
         return BodyPartSlug.gluteal;
@@ -143,10 +143,10 @@ enum BodyPartSlug {
         return BodyPartSlug.quadriceps;
       case 'hamstring':
       case 'hamstrings':
-        return BodyPartSlug.hamstring;
+        return BodyPartSlug.hamstrings;
       case 'adductor':
       case 'adductors':
-        return BodyPartSlug.adductor;
+        return BodyPartSlug.adductors;
       case 'abductors':
         return BodyPartSlug.abductors;
       case 'calves':
@@ -156,7 +156,7 @@ enum BodyPartSlug {
       case 'tibialis-anterior':
       case 'tibialis_anterior':
       case 'tibialis-anterior-muscle':
-        return BodyPartSlug.tibialis;
+        return BodyPartSlug.tibialisAnterior;
       default:
         return null;
     }
@@ -191,22 +191,22 @@ enum BodyPartSlug {
         return 'biceps-short';
       case BodyPartSlug.triceps:
         return 'triceps';
-      case BodyPartSlug.forearm:
-        return 'forearm';
+      case BodyPartSlug.forearms:
+        return 'forearms';
       case BodyPartSlug.gluteal:
         return 'gluteal';
       case BodyPartSlug.quadriceps:
         return 'quadriceps';
-      case BodyPartSlug.hamstring:
-        return 'hamstring';
-      case BodyPartSlug.adductor:
-        return 'adductor';
+      case BodyPartSlug.hamstrings:
+        return 'hamstrings';
+      case BodyPartSlug.adductors:
+        return 'adductors';
       case BodyPartSlug.abductors:
         return 'abductors';
       case BodyPartSlug.calves:
         return 'calves';
-      case BodyPartSlug.tibialis:
-        return 'tibialis';
+      case BodyPartSlug.tibialisAnterior:
+        return 'tibialis-anterior';
     }
   }
 }
