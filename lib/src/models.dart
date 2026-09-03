@@ -105,6 +105,10 @@ enum BodyPartSlug {
       case 'obliques':
         return BodyPartSlug.obliques;
       case 'front-deltoids':
+      // camelCase, as the exercise catalog's body_slugs ship it. The `_` -> `-`
+      // normalisation above does not help here: there is no separator to
+      // rewrite, so `frontDeltoids` arrives as `frontdeltoids`.
+      case 'frontdeltoids':
       case 'front-delts':
       case 'front-delt':
       case 'deltoids':
@@ -113,6 +117,7 @@ enum BodyPartSlug {
       case 'anterior-deltoids':
         return BodyPartSlug.frontDeltoids;
       case 'back-deltoids':
+      case 'backdeltoids':
       case 'back-delts':
       case 'back-delt':
       case 'rear-deltoids':
@@ -153,6 +158,7 @@ enum BodyPartSlug {
       case 'calf':
         return BodyPartSlug.calves;
       case 'tibialis':
+      case 'tibialisanterior':
       case 'tibialis-anterior':
       case 'tibialis_anterior':
       case 'tibialis-anterior-muscle':
